@@ -1,0 +1,96 @@
+name: Build
+
+on: [push, pull_request]
+
+jobs:
+  build-linux-amd64:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build linux-amd64
+      run: |
+        scripts/build-ubuntu-amd64.sh
+        
+
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.3
+      with:
+        name: Source Engine
+        path: /home/runner/work/source-engine/source-engine/build/
+
+  build-windows-i386:
+    runs-on: windows-2019
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build windows-i386
+      run: |
+        git submodule init && git submodule update
+        ./waf.bat configure -T debug --32bits
+        ./waf.bat build
+        
+
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.3
+      with:
+        name: Source Engine
+        path: D:\a\source-engine\source-engine\build\
+
+  build-windows-amd64:
+    runs-on: windows-2019
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build windows-amd64
+      run: |
+        git submodule init && git submodule update
+        ./waf.bat configure -T debug
+        ./waf.bat build
+
+        
+
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.3
+      with:
+        name: Source Engine
+        path: D:\a\source-engine\source-engine\build\
+
+  build-dedicated-windows-i386:
+    runs-on: windows-2019
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build dedicated windows-i386
+      run: |
+        git submodule init && git submodule update
+        ./waf.bat configure -T debug -d
+        ./waf.bat build
+
+        
+
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.3
+      with:
+        name: Source Engine
+        path: D:\a\source-engine\source-engine\build\
+
+  build-dedicated-windows-amd64:
+    runs-on: windows-2019
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build dedicated windows-amd64
+      run: |
+        git submodule init && git submodule update
+        ./waf.bat configure -T debug -d
+        ./waf.bat build
+
+        
+
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.3
+      with:
+        name: Source Engine
+        path: D:\a\source-engine\source-engine\build\
+
